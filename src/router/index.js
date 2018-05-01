@@ -10,13 +10,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
+      name: 'QRCode',
       component: QRCode
     },
-    {
-      path: '/barcode',
-      name: 'Barcode',
-      component: QRCode,
-    }
   ]
 })

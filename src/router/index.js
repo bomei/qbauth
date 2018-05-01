@@ -6,6 +6,7 @@ import QRCode from '@/components/QRCode'
 Vue.use(Router)
 
 export default new Router({
+  mode:'history',
   routes: [
     {
       path: '/',

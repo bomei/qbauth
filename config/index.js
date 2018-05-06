@@ -17,7 +17,7 @@ module.exports = {
       //   pathRewrite:{
       //     '^/key':'/key'
       //   }
-      }
+      // }
     },
 
     // Various Dev Server settings

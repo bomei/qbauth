@@ -10,7 +10,15 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      // '/key':{
+      //   target:'http://localhost:3001/mongo',
+      //   changeOrigin:true,
+      //   pathRewrite:{
+      //     '^/key':'/key'
+      //   }
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

@@ -1,6 +1,9 @@
 import sjcl from './sjcl.js';
 
 class Util{
+    newKeyUrl='http://localhost:3001/mongo/key'
+
+
     genAuthCode(password, nonce, algorithm){
         console.debug(password,nonce,algorithm)
         let hash = sjcl.hash.sha1
@@ -50,6 +53,13 @@ class Util{
         let hash= sjcl.hash.sha1.hash(issuer+account+nonce)
         let hex=sjcl.codec.base32hex.fromBits(hash)
         return hex
+    }
+
+    newKey(){
+        return fetch(this.newKeyUrl,{method:'POST'})
+        .then(resp=>resp.json())
+        .then(res=>{return res})
+        .catch(err=>console.log(err))
     }
 }
 

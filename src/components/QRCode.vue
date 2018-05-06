@@ -41,7 +41,7 @@ export default {
   name: "QRCode",
   data() {
     return {
-        // key: '',
+        key: '',
         account: 'john@example.com',
         issuer:'Hello',
         // uri: '',
@@ -60,22 +60,24 @@ export default {
           let nonce = parseInt(timestamp/30)
           this.authCode=util.genAuthCode(this.key,nonce)
       },1000)
+      this.regenerate()
   },
   beforeDestroy(){
       clearInterval(this.stMark)
   },
   computed:{
-      key: function(){
-          return util.genKey(this.issuer, this.account)
-      },
       uri: function(){
           return `qbauth://totp/${this.issuer}:${this.account}?secret=${this.key}&issuer=${this.issuer}&algorithm=SHA1&digits=6&period=30`
       },
   },
   methods:{
       regenerate: function(){
+          util.newKey()
+          .then(key=>{
+              this.key=key
+              console.log(this.key, this.account, this.issuer)
+          })
         //   this.uri=`qbauth://totp/${this.issuer}:${this.account}?secret=${this.key}&issuer=${this.issuer}&algorithm=SHA1&digits=6&period=30`
-          console.log(this.key, this.account, this.issuer)
       }
   }
 };

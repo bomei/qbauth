@@ -18,4 +18,10 @@ npm run build
 npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+if you use zsh and have installed `nodejs`, `nginx`, `git` and all of them got default basic config, you can just use
+```bash
+./go-online.sh
+```
+to build and mv the built file to /var/www/html to make this vue website start.
+
+Also, use `python3.6.3` to run the `auth-server.py` to start the backend program, and a mongodb listening 27017 port is required.

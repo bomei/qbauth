@@ -88,8 +88,9 @@ export default {
               else
                 this.key=key
               console.log(this.key, this.account, this.issuer)
+              this.uri=`qbauth://totp/${this.issuer}:${this.account}?secret=${this.key}&issuer=${this.issuer}&algorithm=SHA1&digits=6&period=30`
           })
-          this.uri=`qbauth://totp/${this.issuer}:${this.account}?secret=${this.key}&issuer=${this.issuer}&algorithm=SHA1&digits=6&period=30`
+          
       },
     check:function(){
         util.checkCode(`${this.issuer}:${this.account}`,this.enteredCode)

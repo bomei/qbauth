@@ -30,6 +30,13 @@
         <span class='auth-code'>{{authCode}}</span>
         <span>left: {{leftSeconds}}</span>
     </div>
+    <div class='auth-code-box'>
+        <div class='input-box'>
+            <label class='input-label'>Enter code:</label>
+            <input class='input-label' v-model="enteredCode"/>
+            <button class="input-box" v-on:click='check'>Check!</button>
+        </div>
+    </div>
   </div>
 </template>
 
@@ -48,6 +55,7 @@ export default {
         authCode: '',
         stMark: '',
         leftSeconds:0,
+        enteredCode:'',
     };
   },
   components: {
@@ -72,13 +80,28 @@ export default {
   },
   methods:{
       regenerate: function(){
-          util.newKey()
+          util.newKey(this.issuer,this.account)
           .then(key=>{
-              this.key=key
+              if(key ===''){
+                  alert('empty key, try again')
+              }
+              else
+                this.key=key
               console.log(this.key, this.account, this.issuer)
           })
         //   this.uri=`qbauth://totp/${this.issuer}:${this.account}?secret=${this.key}&issuer=${this.issuer}&algorithm=SHA1&digits=6&period=30`
-      }
+      },
+    check:function(){
+        util.checkCode(`${this.issuer}:${this.account}`,this.enteredCode)
+        .then(res=>{
+            if(res){
+                alert('Code accepted!')
+            }
+            else{
+                alert('Code not accepted!')
+            }
+        })
+    }
   }
 };
 </script>

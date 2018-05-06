@@ -5,7 +5,7 @@ class Util{
 
 
     genAuthCode(password, nonce, algorithm){
-        console.debug(password,nonce,algorithm)
+        // console.log(password,nonce,algorithm)
         let hash = sjcl.hash.sha1
         if (algorithm === 'SHA256'){
             hash = sjcl.hash.sha256
@@ -55,10 +55,41 @@ class Util{
         return hex
     }
 
-    newKey(){
-        return fetch(this.newKeyUrl,{method:'POST'})
+    newKey(issuer,account){
+        let mark=`${issuer}:${account}`
+        let body = new FormData()
+        body.append('mark',mark)
+        console.log(body)
+        return fetch('/mongo/key',{
+            method:'POST',
+            body:body
+        })
         .then(resp=>resp.json())
-        .then(res=>{return res})
+        .then(res=>{
+            if(res.status==='SUCCESS')
+                return res.key
+            else
+                Alert.alert('error',res.detail)
+                return ''
+        })
+        .catch(err=>console.log(err))
+    }
+
+    checkCode=(mark, code)=>{
+        let body=new FormData()
+        body.append('code',code)
+        body.append('mark',mark)
+        return fetch('/mongo/check',{
+            method:'POST',
+            body:body
+        })
+        .then(resp=>resp.json())
+        .then(res=>{
+            if(res.status==='SUCCESS')
+                return true
+            else
+                return false
+        })
         .catch(err=>console.log(err))
     }
 }

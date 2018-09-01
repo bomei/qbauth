@@ -1,14 +1,14 @@
 # qbauth
 
-> A Vue.js project
+> QbGA server
 
-## Build Setup
+## Web page setup
 
 ``` bash
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# serve with hot reload at 0.0.0.0:8080
 npm run dev
 
 # build for production with minification
@@ -18,10 +18,15 @@ npm run build
 npm run build --report
 ```
 
-if you use zsh and have installed `nodejs`, `nginx`, `git` and all of them got default basic config, you can just use
-```bash
-./go-online.sh
-```
-to build and mv the built file to /var/www/html to make this vue website start.
+## Make a simple mongodb
 
-Also, use `python3.6.3` to run the `auth-server.py` to start the backend program, and a mongodb listening 27017 port is required.
+First you need a simple mongodb, follow [https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/).
+
+Please do the auth job if you want to put this in prod env.
+
+## Barcode generator server with python3.5+( just 3.6 and 3.7.0 tested)
+
+```python
+python auth-server.py
+```
+

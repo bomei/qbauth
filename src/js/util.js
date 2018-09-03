@@ -57,22 +57,23 @@ class Util{
 
     newKey(issuer,account){
         let mark=`${issuer}:${account}`
-        let body = new FormData()
-        body.append('mark',mark)
-        console.log(body)
-        return fetch('/mongo/key',{
-            method:'POST',
-            body:body
-        })
-        .then(resp=>resp.json())
-        .then(res=>{
-            if(res.status==='SUCCESS')
-                return res.key
-            else
-                Alert.alert('error',res.detail)
-                return ''
-        })
-        .catch(err=>console.log(err))
+        return sjcl.codec.base64.fromBits(sjcl.random.randomWords(6,0),true)
+        // let body = new FormData()
+        // body.append('mark',mark)
+        // console.log(body)
+        // return fetch('/mongo/key',{
+        //     method:'POST',
+        //     body:body
+        // })
+        // .then(resp=>resp.json())
+        // .then(res=>{
+        //     if(res.status==='SUCCESS')
+        //         return res.key
+        //     else
+        //         Alert.alert('error',res.detail)
+        //         return ''
+        // })
+        // .catch(err=>console.log(err))
     }
 
     checkCode=(mark, code)=>{

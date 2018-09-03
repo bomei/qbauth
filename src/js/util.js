@@ -1,5 +1,4 @@
-import sjcl from './sjcl.js';
-
+import sjcl from './sjcl'
 class Util{
     newKeyUrl='http://localhost:3001/mongo/key'
 

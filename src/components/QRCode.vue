@@ -80,16 +80,14 @@ export default {
   },
   methods:{
       regenerate: function(){
-          util.newKey(this.issuer,this.account)
-          .then(key=>{
-              if(key ===''){
-                  alert('empty key, try again')
-              }
-              else
-                this.key=key
-              console.log(this.key, this.account, this.issuer)
-              this.uri=`qbauth://totp/${this.issuer}:${this.account}?secret=${this.key}&issuer=${this.issuer}&algorithm=SHA1&digits=6&period=30`
-          })
+            let key=util.newKey(this.issuer,this.account)
+            if(key ===''){
+                alert('empty key, try again')
+            }
+            else
+            this.key=key
+            console.log(this.key, this.account, this.issuer)
+            this.uri=`qbauth://totp/${this.issuer}:${this.account}?secret=${this.key}&issuer=${this.issuer}&algorithm=SHA1&digits=6&period=30`
           
       },
     check:function(){

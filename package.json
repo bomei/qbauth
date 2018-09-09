@@ -10,6 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "otpauth": "^3.2.1",
     "vue": "^2.5.2",
     "vue-qr": "^1.2.8",
     "vue-router": "^3.0.1"

@@ -10,12 +10,24 @@
                 <input class='input-label' placeholder="Issuer" v-model="issuer"/>
             </div>
             <div class="input-box">
-                <label class='input-label'>Account:</label>
-                <input class='input-label' placeholder="Account" v-model="account"/>
+                <label class='input-label'>Label:</label>
+                <input class='input-label' placeholder="Label" v-model="label"/>
+            </div>
+            <div class="input-box">
+                <label class='input-label'>Digits:</label>
+                <input class='input-label' placeholder="6" v-model="digits"/>
+            </div>
+            <div class="input-box">
+                <label class='input-label'>Period:</label>
+                <input class='input-label' placeholder="30" v-model="period" />
+            </div>
+            <div class="input-box">
+                <label class='input-label'>Algorithm:</label>
+                <input class='input-label' placeholder="SHA1" v-model="algorithm" disabled='disabled'/>
             </div>
             <div class='key-box'>
-                <label class='input-label'>Key:</label>
-                <textarea class='input-label' placeholder="Key" v-model='key' disabled='disabled'/>
+                <label class='input-label'>Secret:</label>
+                <textarea class='input-label' placeholder="Key" v-model='secret' disabled='disabled'/>
             </div>
             <div class='input-box'>
                 <button v-on:click='regenerate'>Regenerate</button>
@@ -43,18 +55,23 @@
 <script>
 import VueQR from "vue-qr";
 import util from '../js/util';
+const OTPAuth=require('otpauth')
+
 
 export default {
   name: "QRCode",
   data() {
     return {
-        key: '',
-        account: 'john@example.com',
+        secret: '',
+        label: 'john@example.com',
         issuer:'Hello',
+        digits:6,
+        period:30,
         uri: '',
         authCode: '',
         stMark: '',
         leftSeconds:0,
+        algorithm:'SHA1',
         enteredCode:'',
     };
   },
@@ -64,9 +81,9 @@ export default {
   mounted(){
       this.stMark=setInterval(()=>{
           let timestamp=util.getCurrentTimestamp()
-          this.leftSeconds=30-timestamp%30
-          let nonce = parseInt(timestamp/30)
-          this.authCode=util.genAuthCode(this.key,nonce)
+          this.leftSeconds=this.period-timestamp%this.period
+          let nonce = parseInt(timestamp/this.period)
+          this.authCode=this.totp.generate()
       },1000)
       this.regenerate()
   },
@@ -74,20 +91,28 @@ export default {
       clearInterval(this.stMark)
   },
   computed:{
-    //   uri: function(){
-    //       return `qbauth://totp/${this.issuer}:${this.account}?secret=${this.key}&issuer=${this.issuer}&algorithm=SHA1&digits=6&period=30`
-    //   },
+      totp(){
+          return new OTPAuth.TOTP({
+              issuer:this.issuer,
+              label:this.label,
+              algorithm:this.algorithm,
+              digits:this.digits,
+              period:this.period,
+              secret:OTPAuth.Secret.fromB32(this.secret)
+          })
+      }
   },
   methods:{
       regenerate: function(){
-            let key=util.newKey(this.issuer,this.account)
+            let key=util.newKey(this.issuer,this.label)
             if(key ===''){
                 alert('empty key, try again')
             }
             else
-            this.key=key
-            console.log(this.key, this.account, this.issuer)
-            this.uri=`qbauth://totp/${this.issuer}:${this.account}?secret=${this.key}&issuer=${this.issuer}&algorithm=SHA1&digits=6&period=30`
+                this.secret=key.toUpperCase()
+            console.log(this.secret, this.account, this.issuer)
+            this.uri=this.totp.toString()
+            // this.uri=`otpauth://totp/${this.issuer}:${this.account}?secret=${this.key}&issuer=${this.issuer}&algorithm=${this.algorithm}&digits=${this.digits}&period=${this.period}`
           
       },
     check:function(){

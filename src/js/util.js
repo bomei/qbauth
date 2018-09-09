@@ -56,7 +56,7 @@ class Util{
 
     newKey(issuer,account){
         let mark=`${issuer}:${account}`
-        return sjcl.codec.base64.fromBits(sjcl.random.randomWords(6,0),true)
+        return sjcl.codec.base32.fromBits(sjcl.random.randomWords(5,0),true)
         // let body = new FormData()
         // body.append('mark',mark)
         // console.log(body)
